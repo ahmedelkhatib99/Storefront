@@ -39,49 +39,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var product_1 = require("../models/product");
+var order_1 = require("../models/order");
 var jwt_1 = __importDefault(require("../services/jwt"));
-var productStore = new product_1.ProductStore();
+var orderStore = new order_1.OrderStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productStore.index()];
+            case 0: return [4 /*yield*/, orderStore.index()];
             case 1:
-                products = _a.sent();
-                res.json(products);
+                orders = _a.sent();
+                res.json(orders);
                 return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product;
+    var order;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productStore.show(req.params.id)];
+            case 0: return [4 /*yield*/, orderStore.show(req.params.id)];
             case 1:
-                product = _a.sent();
-                res.json(product);
+                order = _a.sent();
+                res.json(order);
                 return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, newProduct, error_1, message;
+    var order, newOrder, error_1, message;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                product = {
+                order = {
                     id: req.body.id,
-                    product_name: req.body.product_name,
-                    price: req.body.price,
-                    category: req.body.category
+                    status: req.body.status,
+                    user_id: req.body.user_id
                 };
-                return [4 /*yield*/, productStore.create(product)];
+                return [4 /*yield*/, orderStore.create(order)];
             case 1:
-                newProduct = _a.sent();
-                res.json(newProduct);
+                newOrder = _a.sent();
+                res.json(newOrder);
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
@@ -94,22 +93,22 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-var categoryProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+var userOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productStore.categoryProducts(req.body.category)];
+            case 0: return [4 /*yield*/, orderStore.userOrders(req.params.user_id)];
             case 1:
-                products = _a.sent();
-                res.json(products);
+                orders = _a.sent();
+                res.json(orders);
                 return [2 /*return*/];
         }
     });
 }); };
-var productsRoutes = function (app) {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products', jwt_1["default"], create);
-    app.post('/products/category', categoryProducts);
+var ordersRoutes = function (app) {
+    app.get('/orders', index);
+    app.get('/orders/:id', show);
+    app.post('/orders', create);
+    app.get('/orders/users/:user_id', jwt_1["default"], userOrders);
 };
-exports["default"] = productsRoutes;
+exports["default"] = ordersRoutes;

@@ -39,12 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.ProductStore = void 0;
+exports.OrderStore = void 0;
 var datbase_1 = __importDefault(require("../datbase"));
-var ProductStore = /** @class */ (function () {
-    function ProductStore() {
+var OrderStore = /** @class */ (function () {
+    function OrderStore() {
     }
-    ProductStore.prototype.index = function () {
+    OrderStore.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, error_1;
             return __generator(this, function (_a) {
@@ -54,7 +54,7 @@ var ProductStore = /** @class */ (function () {
                         return [4 /*yield*/, datbase_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products';
+                        sql = 'SELECT * FROM orders';
                         return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -62,13 +62,13 @@ var ProductStore = /** @class */ (function () {
                         return [2 /*return*/, result.rows];
                     case 3:
                         error_1 = _a.sent();
-                        throw new Error("Could not get products. Error: ".concat(error_1));
+                        throw new Error("Could not get orders. Error: ".concat(error_1));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    ProductStore.prototype.show = function (id) {
+    OrderStore.prototype.show = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, error_2;
             return __generator(this, function (_a) {
@@ -78,24 +78,21 @@ var ProductStore = /** @class */ (function () {
                         return [4 /*yield*/, datbase_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products WHERE id=($1)';
+                        sql = 'SELECT * FROM orders WHERE id=($1)';
                         return [4 /*yield*/, conn.query(sql, [id])];
                     case 2:
                         result = _a.sent();
-                        // if (result.rowCount == 0) {
-                        //     throw new Error(`Product with id: ${id} does not exist`)
-                        // }
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         error_2 = _a.sent();
-                        throw new Error("Could not find product ".concat(id, ". Error: ").concat(error_2));
+                        throw new Error("Could not find order ".concat(id, ". Error: ").concat(error_2));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    ProductStore.prototype.create = function (p) {
+    OrderStore.prototype.create = function (o) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, error_3;
             return __generator(this, function (_a) {
@@ -105,45 +102,44 @@ var ProductStore = /** @class */ (function () {
                         return [4 /*yield*/, datbase_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO products (id, product_name, price, category) VALUES($1, $2, $3, $4) RETURNING *';
-                        return [4 /*yield*/, conn.query(sql, [p.id, p.product_name, p.price, p.category])];
+                        sql = 'INSERT INTO orders (id, status, user_id) VALUES($1, $2, $3) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [o.id, o.status, o.user_id])];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         error_3 = _a.sent();
-                        throw new Error("Could not add new product. Error: ".concat(error_3));
+                        throw new Error("Could not add new order. Error: ".concat(error_3));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    ProductStore.prototype.categoryProducts = function (category) {
+    OrderStore.prototype.userOrders = function (user_id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        console.log(category);
                         return [4 /*yield*/, datbase_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products WHERE category=($1)';
-                        return [4 /*yield*/, conn.query(sql, [category])];
+                        sql = 'SELECT * FROM orders WHERE user_id=($1)';
+                        return [4 /*yield*/, conn.query(sql, [user_id])];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows];
                     case 3:
                         error_4 = _a.sent();
-                        throw new Error("Could not find product of category ".concat(category, ". Error: ").concat(error_4));
+                        throw new Error("Could not find order of user with id ".concat(user_id, ". Error: ").concat(error_4));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    return ProductStore;
+    return OrderStore;
 }());
-exports.ProductStore = ProductStore;
+exports.OrderStore = OrderStore;
