@@ -68,4 +68,19 @@ export class OrderStore {
         }
     }
 
+
+    async delete(id: string): Promise<Order> {
+        try {
+            const sql = 'DELETE FROM orders WHERE id=($1) RETURNING *'
+            const conn = await client.connect()        
+            const result = await conn.query(sql, [id])
+
+            conn.release()
+            return result.rows[0]
+
+        } catch (error) {
+            throw new Error(`Could not delete order ${id}. Error: ${error}`)
+        }
+    }
+
 }

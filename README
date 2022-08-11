@@ -1,0 +1,40 @@
+# Database names
+main: storefront
+test: storefront_test
+
+# to run migrations
+npm run migrate-up
+npm run migrate-down
+
+# to run project
+npm run watch
+
+# to run tests
+npm run test
+
+# database tables
+TABLE products(id SERIAL PRIMARY KEY, product_name VARCHAR(100) NOT NULL, price INTEGER NOT NULL, category VARCHAR(100));
+TABLE users(id SERIAL PRIMARY KEY, first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, user_password VARCHAR(100) NOT NULL);
+TABLE orders(id SERIAL PRIMARY KEY, status VARCHAR(100) NOT NULL, user_id INTEGER REFERENCES users table);
+TABLE order_products(id SERIAL PRIMARY KEY, order_id INTEGER REFERENCES orders table, product_id INTEGER REFERENCES products table, quantity INTEGER NOT NULL);
+
+# RESTFUL routes
+##products
+index: '/products' [GET]
+show: '/products/:id' [GET]
+create: '/products' [POST]
+categoryProducts: '/products/category' [POST]
+delete: '/products/:id' [DELETE]
+
+##orders
+index: '/orders' [GET]
+show: '/orders/:id' [GET]
+create: '/orders' [POST]
+userOrders: '/orders/users/:user_id' [GET]
+delete: '/orders/:id' [DELETE]
+
+##users
+index: '/users' [GET]
+show: '/users/:id' [GET]
+create: '/users' [POST]
+delete: '/users/:id' [DELETE]

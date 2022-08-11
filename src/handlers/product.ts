@@ -41,11 +41,19 @@ const categoryProducts = async(req: Request, res: Response) => {
 }
 
 
+const deleteProduct = async(req: Request, res: Response) => {
+    const product = await productStore.delete(req.params.id);
+    res.json(product)
+}
+
+
+
 const productsRoutes = (app: express.Application) => {
     app.get('/products', index);
     app.get('/products/:id', show);
     app.post('/products', verifyAuthToken, create);
     app.post('/products/category', categoryProducts);
+    app.delete('/products/:id', deleteProduct);
 }
 
 export default productsRoutes;

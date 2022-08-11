@@ -41,12 +41,18 @@ const create = async (req: Request, res: Response) => {
 }
 
 
+const deleteUser = async(req: Request, res: Response) => {
+    const user = await userStore.delete(req.params.id);
+    res.json(user)
+}
+
 
 
 const usersRoutes = (app: express.Application) => {
     app.get('/users', verifyAuthToken, index);
-    app.get('/users/:id', verifyAuthToken,  show);
+    app.get('/users/:id', verifyAuthToken, show);
     app.post('/users', create); //how to add verifytoken here, api won't be accessible
+    app.delete('/users/:id', deleteUser);
 }
 
 export default usersRoutes;

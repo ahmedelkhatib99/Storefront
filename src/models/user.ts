@@ -28,7 +28,7 @@ export class UserStore {
         }
     }
 
-    async show(id: string): Promise<User> {
+    async show(id: string): Promise<{id:number, first_name: string, last_name: string}> {
         try {
             const conn = await client.connect();    
             const sql = 'SELECT id, first_name, last_name FROM users WHERE id=($1)';
@@ -58,6 +58,21 @@ export class UserStore {
             return result.rows[0]
         } catch (error) {
             throw new Error(`Could not add new user. Error: ${error}`)
+        }
+    }
+
+
+    async delete(id: string): Promise<{id:number, first_name: string, last_name: string}> {
+        try {
+            const sql = 'DELETE FROM users WHERE id=($1) RETURNING id, first_name, last_name'
+            const conn = await client.connect()        
+            const result = await conn.query(sql, [id])
+
+            conn.release()
+            return result.rows[0]
+
+        } catch (error) {
+            throw new Error(`Could not delete user ${id}. Error: ${error}`)
         }
     }
 
