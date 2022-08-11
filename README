@@ -1,6 +1,13 @@
+# ports
+app is working on port 3000
+database working on localhost port 5432
+
 # Database names
 main: storefront
 test: storefront_test
+
+# packages installation
+npm install
 
 # to run migrations
 npm run migrate-up
@@ -38,3 +45,15 @@ index: '/users' [GET]
 show: '/users/:id' [GET]
 create: '/users' [POST]
 delete: '/users/:id' [DELETE]
+
+
+# Environment variables
+POSTGRES_HOST=127.0.0.1 
+POSTGRES_DB=storefront
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=123456
+POSTGRES_TEST_DB=storefront_test
+ENV=dev
+BCRYPT_PEPPER=any-pepper
+SALT_ROUNDS=10
+TOKEN_SECRET=any-secret
