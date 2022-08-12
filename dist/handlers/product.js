@@ -73,8 +73,8 @@ const deleteProduct = async (req, res) => {
     }
 };
 const productsRoutes = (app) => {
-    app.get('/products', jwt_1.default, index);
-    app.get('/products/:id', jwt_1.default, show);
+    app.get('/products', index);
+    app.get('/products/:id', show);
     app.post('/products', jwt_1.default, create);
     app.post('/products/category', jwt_1.default, categoryProducts);
     app.delete('/products/:id', jwt_1.default, deleteProduct);

@@ -24,13 +24,11 @@ describe("Product Handler", () => {
         expect(response.status).toBe(200);
     });
     it('index should respond with status 200', async () => {
-        const response = await request.get('/products')
-            .set({ Authorization: 'Bearer ' + token });
+        const response = await request.get('/products');
         expect(response.status).toBe(200);
     });
     it('show should respond with status 200', async () => {
-        const response = await request.get('/products/2')
-            .set({ Authorization: 'Bearer ' + token });
+        const response = await request.get('/products/2');
         expect(response.status).toBe(200);
     });
     it('categoryProducts should respond with status 200', async () => {
