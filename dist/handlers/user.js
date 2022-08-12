@@ -10,12 +10,28 @@ const jwt_1 = __importDefault(require("../services/jwt"));
 dotenv_1.default.config();
 const userStore = new user_1.UserStore();
 const index = async (_req, res) => {
-    const users = await userStore.index();
-    res.json(users);
+    try {
+        const users = await userStore.index();
+        res.json(users);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const show = async (req, res) => {
-    const user = await userStore.show(req.params.id);
-    res.json(user);
+    try {
+        const user = await userStore.show(req.params.id);
+        res.json(user);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const create = async (req, res) => {
     try {
@@ -38,13 +54,21 @@ const create = async (req, res) => {
     }
 };
 const deleteUser = async (req, res) => {
-    const user = await userStore.delete(req.params.id);
-    res.json(user);
+    try {
+        const user = await userStore.delete(req.params.id);
+        res.json(user);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const usersRoutes = (app) => {
     app.get('/users', jwt_1.default, index);
     app.get('/users/:id', jwt_1.default, show);
-    app.post('/users', create); //how to add verifytoken here, api won't be accessible
-    app.delete('/users/:id', deleteUser);
+    app.post('/users', create);
+    app.delete('/users/:id', jwt_1.default, deleteUser);
 };
 exports.default = usersRoutes;

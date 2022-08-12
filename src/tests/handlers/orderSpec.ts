@@ -32,12 +32,14 @@ describe("Order Handler", () => {
     });
 
     it('index should respond with status 200', async () => {
-        const response = await request.get('/orders');
+        const response = await request.get('/orders')
+        .set({ Authorization: 'Bearer '+ token });
         expect(response.status).toBe(200);
     });
 
     it('show should respond with status 200', async () => {
-        const response = await request.get('/orders/2');
+        const response = await request.get('/orders/2')
+        .set({ Authorization: 'Bearer '+ token });
         expect(response.status).toBe(200);
     });
 
@@ -48,7 +50,8 @@ describe("Order Handler", () => {
     });
 
     it('delete should respond with status 200', async () => {
-        const response = await request.delete('/orders/2');
+        const response = await request.delete('/orders/2')
+        .set({ Authorization: 'Bearer '+ token });
         expect(response.status).toBe(200);
     });
 

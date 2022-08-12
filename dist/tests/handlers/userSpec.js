@@ -19,20 +19,22 @@ describe("User Handler", () => {
             first_name: 'atef',
             last_name: 'aly',
             user_password: '123456'
-        })
-            .set({ Authorization: 'Bearer ' + token });
+        });
         expect(response.status).toBe(200);
     });
     it('index should respond with status 200', async () => {
-        const response = await request.get('/users').set({ Authorization: 'Bearer ' + token });
+        const response = await request.get('/users')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
     it('show should respond with status 200', async () => {
-        const response = await request.get('/users/3').set({ Authorization: 'Bearer ' + token });
+        const response = await request.get('/users/3')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
     it('delete should respond with status 200', async () => {
-        const response = await request.delete('/users/3');
+        const response = await request.delete('/users/3')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
 });

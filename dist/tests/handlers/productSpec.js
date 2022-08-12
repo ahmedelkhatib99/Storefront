@@ -24,22 +24,26 @@ describe("Product Handler", () => {
         expect(response.status).toBe(200);
     });
     it('index should respond with status 200', async () => {
-        const response = await request.get('/products');
+        const response = await request.get('/products')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
     it('show should respond with status 200', async () => {
-        const response = await request.get('/products/2');
+        const response = await request.get('/products/2')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
     it('categoryProducts should respond with status 200', async () => {
         const response = await request.post('/products/category')
             .send({
             category: "electricity"
-        });
+        })
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
     it('delete should respond with status 200', async () => {
-        const response = await request.delete('/products/2');
+        const response = await request.delete('/products/2')
+            .set({ Authorization: 'Bearer ' + token });
         expect(response.status).toBe(200);
     });
 });

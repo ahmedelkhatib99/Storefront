@@ -10,13 +10,27 @@ const userStore = new UserStore();
 
 
 const index = async(_req: Request, res: Response) => {
-    const users = await userStore.index();
-    res.json(users)
+    try {
+        const users = await userStore.index();
+        res.json(users)
+        
+    } catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error) message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 }
 
 const show = async(req: Request, res: Response) => {
-    const user = await userStore.show(req.params.id);
-    res.json(user)
+    try {
+        const user = await userStore.show(req.params.id);
+        res.json(user)
+        
+    } catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error) message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 }
 
 const create = async (req: Request, res: Response) => {
@@ -42,8 +56,15 @@ const create = async (req: Request, res: Response) => {
 
 
 const deleteUser = async(req: Request, res: Response) => {
-    const user = await userStore.delete(req.params.id);
-    res.json(user)
+    try {
+        const user = await userStore.delete(req.params.id);
+        res.json(user)
+        
+    } catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error) message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 }
 
 
@@ -51,8 +72,8 @@ const deleteUser = async(req: Request, res: Response) => {
 const usersRoutes = (app: express.Application) => {
     app.get('/users', verifyAuthToken, index);
     app.get('/users/:id', verifyAuthToken, show);
-    app.post('/users', create); //how to add verifytoken here, api won't be accessible
-    app.delete('/users/:id', deleteUser);
+    app.post('/users', create); 
+    app.delete('/users/:id', verifyAuthToken, deleteUser);
 }
 
 export default usersRoutes;

@@ -7,12 +7,28 @@ const product_1 = require("../models/product");
 const jwt_1 = __importDefault(require("../services/jwt"));
 const productStore = new product_1.ProductStore();
 const index = async (_req, res) => {
-    const products = await productStore.index();
-    res.json(products);
+    try {
+        const products = await productStore.index();
+        res.json(products);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const show = async (req, res) => {
-    const product = await productStore.show(req.params.id);
-    res.json(product);
+    try {
+        const product = await productStore.show(req.params.id);
+        res.json(product);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const create = async (req, res) => {
     try {
@@ -33,18 +49,34 @@ const create = async (req, res) => {
     }
 };
 const categoryProducts = async (req, res) => {
-    const products = await productStore.categoryProducts(req.body.category);
-    res.json(products);
+    try {
+        const products = await productStore.categoryProducts(req.body.category);
+        res.json(products);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const deleteProduct = async (req, res) => {
-    const product = await productStore.delete(req.params.id);
-    res.json(product);
+    try {
+        const product = await productStore.delete(req.params.id);
+        res.json(product);
+    }
+    catch (error) {
+        let message = 'Unknown Error';
+        if (error instanceof Error)
+            message = error.message;
+        res.status(400).json({ status: 0, message });
+    }
 };
 const productsRoutes = (app) => {
-    app.get('/products', index);
-    app.get('/products/:id', show);
+    app.get('/products', jwt_1.default, index);
+    app.get('/products/:id', jwt_1.default, show);
     app.post('/products', jwt_1.default, create);
-    app.post('/products/category', categoryProducts);
-    app.delete('/products/:id', deleteProduct);
+    app.post('/products/category', jwt_1.default, categoryProducts);
+    app.delete('/products/:id', jwt_1.default, deleteProduct);
 };
 exports.default = productsRoutes;
